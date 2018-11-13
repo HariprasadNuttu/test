@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title> VDart Technologies</title>
+      <link rel="icon" href="https://www.vdartinc.com/images/logo.jpg" type="image/png">
+   </head>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+   <body>
+      <form class="form-horizontal create_payload" role="form" action="/process" method="POST">
+         <h1>Create Payload</h1>
+         <input type="text" class="payload" placeholder="payload id">
+         <input type="text" class="time_stamp" placeholder="time_stamp">
+         <input type="submit" value="Create">
+      </form>
+      <button onclick="addPayload()">Click me</button>
+      <script>
+         var payload_objects = [];
+         const CreateUser = document.querySelector('.create_payload')
+         function addPayload(){
+           var payload = CreateUser.querySelector('.payload').value
+           var time_stamp = CreateUser.querySelector('.time_stamp').value
+           payload_objects.push({id:payload,received_ts:time_stamp})
+           console.log(payload_objects);
+         }
+         $(document).ready(function(){
+         $('.create_payload').on('submit', function(evt){
+           evt.preventDefault();
+           $.ajax({
+                url: '/users', // url where to submit the request
+                type : "POST", // type of action POST || GET
+                dataType : 'json', // data type
+                data :  JSON.stringify(payload_objects), // post data || get data
+                success : function(result) {
+                    // you can see the result from the console
+                    // tab of the developer tools
+                    console.log(result);
+                },
+                error: function(xhr, resp, text) {
+                    console.log(xhr, resp, text);
+                }
+            })
+          //  $.ajax({
+          //    url: "/users",
+          //    type: 'POST',
+          //    contentType: 'application/json; charset=utf-8',
+          //    data:{payload:payload_objects},
+          //    success: function(data){
+          //    },
+          //    error: function(error){
+          //    }
+          //  });
+        //   $.post('/users', {payload:payload_objects}, 
+        //       function(returnedData){
+        //           console.log(returnedData);
+        //   }).fail(function(){
+        //         console.log("error");
+        //   },'json');
+         });
+         });
+      </script>
+   </body>
+</html>
